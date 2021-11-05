@@ -1,39 +1,29 @@
-import { defineComponent, reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useLocale } from '@/lang'
+import { defineComponent } from 'vue'
+import { useClientClouds } from '@/api/cloud.service'
 
 export default defineComponent({
 	name: 'Home',
 	setup() {
-		const node = reactive({
-			name: '',
-			picker: ''
-		})
-		const { t } = useI18n()
-		const { setLocale, locale } = useLocale()
+		const cloud = useClientClouds({ immediate: true })
 
 		return () => {
 			return (
-				<div>
-					{locale.value}
-					<el-button type="primary">{t('name')}</el-button>
-					<el-dropdown
-						onCommand={setLocale}
+				<el-table loading={cloud.loading.value} data={cloud.dataSource.value} stripe>
+					<el-table-column
+						prop="cover"
+						label="封面"
 						v-slots={{
-							dropdown: () => (
-								<el-dropdown-menu>
-									<el-dropdown-item command="zh">zh</el-dropdown-item>
-									<el-dropdown-item command="en">en</el-dropdown-item>
-								</el-dropdown-menu>
-							)
+							default: (scope: any) => {
+								return (
+									<el-image
+										src={scope.row.cover}
+										style={{ width: '96px', height: '54px', display: 'block' }}
+									></el-image>
+								)
+							}
 						}}
-					>
-						<el-button type="primary">{t('switch')}</el-button>
-					</el-dropdown>
-					<div>{node.name}</div>
-					<el-color-picker v-model={node.picker} />
-					<el-input v-model={[node.name, ['value']]} placeholder="Please input" />
-				</div>
+					></el-table-column>
+				</el-table>
 			)
 		}
 	}
