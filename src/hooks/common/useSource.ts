@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { toRefs, reactive } from 'vue'
 import { UnwrapNestedRefs } from '@vue/reactivity/dist/reactivity'
 
 export type InitSource<T> = {
@@ -26,4 +26,12 @@ export function initSource<T extends object, R = any>(props?: T): UnwrapNestedRe
 	)
 
 	return instance
+}
+
+export function useSource<T extends object>(node: any, props?: T) {
+	const instance = initSource(props)
+
+	const initNode = () => {}
+
+	return { ...toRefs(instance), initNode }
 }

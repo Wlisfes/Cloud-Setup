@@ -1,12 +1,18 @@
 import { toRefs } from 'vue'
 import { nodeClientClouds } from '@/api/cloud.service'
-// import { useInstance } from '@/hooks/common/instance'
-import { useSource } from '@/hooks/common/useState'
+import { useSource } from '@/hooks/common/useSource'
 
 export function useClientClouds() {
-	const node = useSource()
+	const instance = useSource({
+		initNode: (props: any) => {
+			return nodeClientClouds({
+				page: props.page,
+				size: props.size
+			})
+		}
+	})
 
-	// const instance = useInstance(nodeClientClouds)
+	return instance
 	// const initSource = async () => {
 	// 	try {
 	// 		const { code, data } = await nodeClientClouds({

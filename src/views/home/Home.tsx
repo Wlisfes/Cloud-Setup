@@ -1,10 +1,11 @@
 import { defineComponent } from 'vue'
-// import { useClientClouds } from '@/hooks/api/cloud.hooks'
+import { useClientClouds } from '@/hooks/api/cloud.hooks'
 
 export default defineComponent({
 	name: 'Home',
 	setup() {
-		// const { dataSource, loading } = useClientClouds({ immediate: true })
+		// const { dataSource, loading, initNode } = useClientClouds()
+		// initNode()
 		// return () => {
 		// 	return (
 		// 		<el-table v-loading={loading.value} data={dataSource.value} stripe>
