@@ -1,4 +1,5 @@
 import { defineComponent } from 'vue'
+import { ConfigProvider } from 'ant-design-vue'
 import { RouterView } from 'vue-router'
 import { useLocale } from '@/lang'
 
@@ -9,9 +10,9 @@ export default defineComponent({
 
 		return () => {
 			return (
-				<el-config-provider locale={Locale.value}>
+				<ConfigProvider locale={Locale.value}>
 					<RouterView></RouterView>
-				</el-config-provider>
+				</ConfigProvider>
 			)
 		}
 	}

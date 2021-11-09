@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
-import Element from 'element-plus'
-import 'element-plus/dist/index.css'
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'
 
 import App from '@/App'
 import router from '@/router'
@@ -10,8 +10,8 @@ import i18n from '@/lang'
 async function bootstrap() {
 	const app = createApp(App)
 
-	//Register Element
-	app.use(Element, { size: 'small', zIndex: 3000 })
+	//Register Antd
+	app.use(Antd)
 
 	//Register i18n
 	app.use(i18n)
