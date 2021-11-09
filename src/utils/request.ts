@@ -1,5 +1,14 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
+export interface NResponse<T = any> {
+	data: T
+	timestamp: string
+	message: string
+	code: number
+	url?: string
+	method?: string
+}
+
 const service: AxiosInstance = axios.create({
 	baseURL: process.env.VUE_APP_BASE_API,
 	timeout: 60000
