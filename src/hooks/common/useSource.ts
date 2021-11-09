@@ -73,6 +73,7 @@ export function useSource<DATA, Props>(node: UseSourceProps<DATA, Props>) {
 	/**初始化**/
 	const initNode = async (concat?: boolean) => {
 		try {
+			instance.loading = true
 			const { code, data } = await node.init(instance)
 			if (code === 200) {
 				if (concat) {
@@ -83,46 +84,40 @@ export function useSource<DATA, Props>(node: UseSourceProps<DATA, Props>) {
 				instance.total = data.total || 0
 				instance.loading = false
 			}
+			return data
 		} catch (e) {
 			instance.loading = false
 			node.fail?.(e)
+			return e
 		}
 	}
 
 	/**刷新**/
-	const initRefresh = () => {
+	const initRefresh = async () => {
 		instance.page = 1
 		instance.size = 10
-		instance.loading = true
 		instance.refresh = true
-		initNode().finally(() => {
-			instance.loading = false
+		return await initNode().finally(() => {
 			instance.refresh = false
 		})
 	}
 
 	/**分页加载**/
-	const initChnage = (props: { page: number; size: number }) => {
+	const initChnage = async (props: { page: number; size: number }) => {
 		instance.page = props.page
 		instance.size = props.size
-		instance.loading = true
-		initNode().finally(() => {
-			instance.loading = false
-		})
+		return await initNode()
 	}
 
 	/**加载更多**/
-	const initMore = () => {
+	const initMore = async () => {
 		instance.page++
 		instance.size = 10
-		instance.loading = true
-		initNode(true).finally(() => {
-			instance.loading = false
-		})
+		return await initNode(true)
 	}
 
 	/**是否立即执行**/
 	node.immediate && initNode()
 
-	return { ...toRefs(instance), initNode, initChnage, initMore }
+	return { ...toRefs(instance), initNode, initRefresh, initChnage, initMore }
 }
