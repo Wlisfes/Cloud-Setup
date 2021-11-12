@@ -107,9 +107,9 @@ export function useSource<DATA, Props>(node: UseSourceProps<DATA, Props>) {
 	}
 
 	/**加载更多**/
-	const initMore = async () => {
-		instance.page++
-		instance.size = 10
+	const initMore = async (props?: { page: number; size: number }) => {
+		instance.page = props?.page || instance.page + 1
+		instance.size = props?.size || 10
 		return await initNode(true)
 	}
 
