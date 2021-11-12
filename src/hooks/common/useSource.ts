@@ -28,12 +28,6 @@ export interface UseSourceProps<DATA, Props> {
 			list: Array<DATA>
 		}>
 	>
-
-	/**接口执行失败函数**/
-	fail?: (e: unknown) => void
-
-	/**接口执行成功函数**/
-	success?: () => void
 }
 
 /**
@@ -71,31 +65,32 @@ export function useSource<DATA, Props>(node: UseSourceProps<DATA, Props>) {
 	const instance = initSource<DATA, Props>(node.props)
 
 	/**初始化**/
-	const initNode = async (concat?: boolean) => {
-		try {
-			instance.loading = true
-			const { code, data } = await node.init(instance)
-			if (code === 200) {
-				if (concat) {
-					instance.dataSource = instance.dataSource.concat((data.list || []) as UnwrapNestedRefs<DATA[]>)
-				} else {
-					instance.dataSource = (data.list || []) as UnwrapNestedRefs<DATA[]>
+	const initNode = (concat?: boolean) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				instance.loading = true
+				const { code, data } = await node.init(instance)
+				if (code === 200) {
+					if (concat) {
+						instance.dataSource = instance.dataSource.concat((data.list || []) as UnwrapNestedRefs<DATA[]>)
+					} else {
+						instance.dataSource = (data.list || []) as UnwrapNestedRefs<DATA[]>
+					}
+					instance.total = data.total || 0
+					instance.loading = false
 				}
-				instance.total = data.total || 0
+				resolve(true)
+			} catch (e) {
 				instance.loading = false
+				reject(e)
 			}
-			return data
-		} catch (e) {
-			instance.loading = false
-			node.fail?.(e)
-			return e
-		}
+		})
 	}
 
 	/**刷新**/
-	const initRefresh = async () => {
-		instance.page = 1
-		instance.size = 10
+	const initRefresh = async (props?: { page: number; size: number }) => {
+		instance.page = props?.page || 1
+		instance.size = props?.size || 10
 		instance.refresh = true
 		return await initNode().finally(() => {
 			instance.refresh = false
@@ -103,9 +98,11 @@ export function useSource<DATA, Props>(node: UseSourceProps<DATA, Props>) {
 	}
 
 	/**分页加载**/
-	const initChnage = async (props: { page: number; size: number }) => {
-		instance.page = props.page
-		instance.size = props.size
+	const initChnage = async (props?: { page: number; size: number }) => {
+		if (props?.page || props?.size) {
+			instance.page = props.page
+			instance.size = props.size
+		}
 		return await initNode()
 	}
 

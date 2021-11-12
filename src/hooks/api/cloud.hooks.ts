@@ -12,6 +12,8 @@ export function useClientClouds() {
 	return useSource<CloudNode, { title: string }>({
 		props: { title: '' },
 		immediate: true,
-		init: props => nodeClientClouds({ page: props.page, size: props.size, title: props.title })
+		init: ({ page, size, title }) => {
+			return nodeClientClouds({ page, size, title })
+		}
 	})
 }

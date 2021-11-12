@@ -21,7 +21,7 @@ export const messages = {
 const i18n = createI18n({ locale: getCookie(LOCALE_KEY) || 'zh', messages })
 
 export function useLocale() {
-	const locale = computed(() => i18n.global.locale)
+	const locale = computed<string>(() => i18n.global.locale)
 	const Locale = computed(() => {
 		switch (i18n.global.locale) {
 			case 'zh':
