@@ -8,10 +8,10 @@ interface CloudNode {
 }
 
 /**音视频列表-客户端**/
-export function useClientClouds() {
+export function useClientClouds(immediate?: boolean) {
 	return useSource<CloudNode, { title: string }>({
 		props: { title: '' },
-		immediate: true,
+		immediate,
 		init: ({ page, size, title }) => {
 			return nodeClientClouds({ page, size, title })
 		}
