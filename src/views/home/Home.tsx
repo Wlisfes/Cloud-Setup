@@ -1,7 +1,8 @@
 import { defineComponent, PropType } from 'vue'
-import { Table, Image, Spin, Tag } from 'ant-design-vue'
+import { Table, Image, Spin, Tag, Button } from 'ant-design-vue'
 import { useClientClouds } from '@/hooks/api/cloud.hooks'
 import { NodeCloud } from '@/types'
+import { init } from '@/hooks/instance/cropper'
 
 const CloudProps = {
 	node: { type: Object as PropType<NodeCloud | null>, default: null }
@@ -54,6 +55,7 @@ export default defineComponent({
 		return () => {
 			return (
 				<Spin size="large" spinning={loading.value}>
+					<Button onClick={() => init()}>Cropper</Button>
 					<Table
 						rowKey="id"
 						size="small"
