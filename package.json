@@ -11,6 +11,7 @@
 		"ant-design-vue": "^2.2.8",
 		"axios": "^0.24.0",
 		"core-js": "^3.6.5",
+		"cropperjs": "^1.5.12",
 		"js-cookie": "^3.0.1",
 		"vue": "^3.0.0",
 		"vue-class-component": "^8.0.0-0",
