@@ -55,7 +55,15 @@ export default defineComponent({
 		return () => {
 			return (
 				<Spin size="large" spinning={loading.value}>
-					<Button onClick={() => init()}>Cropper</Button>
+					<Button
+						onClick={() =>
+							init()
+								.then(({ done }) => done())
+								.catch(({ done }) => done())
+						}
+					>
+						Cropper
+					</Button>
 					<Table
 						rowKey="id"
 						size="small"
