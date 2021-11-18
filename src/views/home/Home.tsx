@@ -57,9 +57,9 @@ export default defineComponent({
 				<Spin size="large" spinning={loading.value}>
 					<Button
 						onClick={() =>
-							init()
-								.then(({ done }) => done())
-								.catch(({ done }) => done())
+							init({
+								// cover: 'https://oss.lisfes.cn/cloud/cover/2021-10/1635321576774.jpg'
+							}).then(({ done }) => done())
 						}
 					>
 						Cropper
